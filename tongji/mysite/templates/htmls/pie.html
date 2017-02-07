@@ -1,0 +1,108 @@
+{% extends 'htmls/base.html' %}
+
+{% block title %}一天内交易出去物品统计{% endblock %}
+
+{% block content %}
+    <div class="pusher">
+        <div class="ui basic segment">
+            <div class="ui equal width center aligned padded grid">
+                <div class="row">
+                    <div class="column">
+                        <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                    <div class="column">
+                        <div id="container2" style="width: 550px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script language="JavaScript">
+        $(document).ready(function() {
+           var chart = {
+               plotBackgroundColor: null,
+               plotBorderWidth: null,
+               plotShadow: false
+           };
+           var title = {
+              text: '{{ title_cate }}'
+           };
+            var series= [{
+              type: 'pie',
+              name: '物品种类分布',
+              data: [
+                 {% for info in data_cate %}
+                   ['{{ info.name }}',{{ info.counts }}],
+                 {% endfor %}
+              ]
+           }];
+           var tooltip = {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+           };
+           var plotOptions = {
+              pie: {
+                 allowPointSelect: true,
+                 cursor: 'pointer',
+                 dataLabels: {
+                    enabled: false
+                 },
+                 showInLegend: true
+              }
+           };
+
+           var json = {};
+           json.chart = chart;
+           json.title = title;
+           json.tooltip = tooltip;
+           json.series = series;
+           json.plotOptions = plotOptions;
+           $('#container').highcharts(json);
+        });
+    </script>
+
+    <script language="JavaScript">
+        $(document).ready(function() {
+           var chart = {
+               plotBackgroundColor: null,
+               plotBorderWidth: null,
+               plotShadow: false
+           };
+           var title = {
+              text: '{{ title_area }}'
+           };
+            var series= [{
+              type: 'pie',
+              name: '物品地区分布',
+              data: [
+                 {% for info in data_area %}
+                   ['{{ info.name }}',{{ info.counts }}],
+                 {% endfor %}
+              ]
+           }];
+           var tooltip = {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+           };
+           var plotOptions = {
+              pie: {
+                 allowPointSelect: true,
+                 cursor: 'pointer',
+                 dataLabels: {
+                    enabled: false
+                 },
+                 showInLegend: true
+              }
+           };
+
+           var json = {};
+           json.chart = chart;
+           json.title = title;
+           json.tooltip = tooltip;
+           json.series = series;
+           json.plotOptions = plotOptions;
+           $('#container2').highcharts(json);
+        });
+    </script>
+{% endblock %}

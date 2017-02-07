@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}模板标题 {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/semantic.min.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/semantic.min.js' %}"></script>
+    <script src="{% static 'js/highcharts.js' %}"></script>
+{#    <script src="http://code.highcharts.com/highcharts.js"></script>#}
+</head>
+<body>
+    <div class="ui top attached demo menu">
+        <a id="cala" class="item"><i class="sidebar icon"></i> Menu </a>
+    </div>
+    <div class="ui bottom attached segment pushable">
+        <div class="ui inverted labeled left inline vertical sidebar menu">
+            <div class="content">
+                <i class="inverted big home icon" style="padding: 12px;"></i>
+            </div>
+            <br>
+            <a class="item" href="../home">
+                类目发帖量对比
+            </a>
+            <a class="item" href="../pie">
+                一天内热销商品对比
+            </a>
+            <a class="item" href="../top3">
+                热销TOP3对比
+            </a>
+        </div>
+        {% block content %}
+                默认模板内容，如果不覆盖则显示模板内容
+        {% endblock %}
+    </div>
+
+    {% block script %}
+        默认JavaScript
+    {% endblock %}
+  <script language="JavaScript">
+      $(function () {
+          $('#cala').click(function () {
+              $('.ui.sidebar')
+          .sidebar('toggle');
+        });
+      })
+  </script>
+
+
+</body>
+</html>

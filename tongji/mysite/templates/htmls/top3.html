@@ -1,0 +1,99 @@
+{% extends 'htmls/base.html' %}
+
+{% block title %}热销TOP3{% endblock %}
+
+{% block content %}
+    <div class="ui basic segment" style="left: 20%">
+        <div class="ui teal buttons">
+            <div class="ui button">地区</div>
+            <div class="ui combo top right pointing dropdown icon button">
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="scrolling menu">
+                    {% for area in areas %}
+                        <div class="xiala item">{{ area }}</div>
+                    {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+
+{% endblock %}
+{% block script %}
+    <script language="JavaScript">
+       $('.combo.dropdown')
+        .dropdown({
+            action: 'combo'
+        });
+    </script>
+    <script language="JavaScript">
+        function tubioa() {
+            var chart = {
+                type: 'column'
+            };
+            var title = {
+                text: '{{ title }}区二手交易TOP3'
+            };
+            var series = [
+                {% for info in top3_info %}
+                    {
+                        name:'{{ info.name }}',
+                        data:[{{ info.counts }}]
+                    },
+                {% endfor %}
+            ];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.series = series;
+            $('#container').highcharts(json);
+        }
+        $(document).ready(tubioa());
+    </script>
+    <script language="JavaScript">
+        $(function () {
+            $('.xiala.item').click(function () {
+                $.ajax({
+                    type:'get',
+                    url:'/yibu',
+                    dataType:'json',
+                    data:{area:$(this).text()},
+                    success:tubiao
+                });
+            });
+        });
+
+        function tubiao(data) {
+            var chart = {
+                type: 'column'
+            };
+            var title = {
+                text: data.title + '区二手交易TOP3'
+            };
+            var series = [
+                {
+                    name:data.top3_info[0].name,
+                    data:[data.top3_info[0].counts]
+                },
+                {
+                    name:data.top3_info[1].name,
+                    data:[data.top3_info[1].counts]
+                },
+                {
+                    name:data.top3_info[2].name,
+                    data:[data.top3_info[2].counts]
+                }
+            ];
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.series = series;
+            $('#container').highcharts(json);
+        }
+    </script>
+{% endblock %}
+

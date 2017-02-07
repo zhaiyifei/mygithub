@@ -1,0 +1,54 @@
+{% extends 'htmls/base.html' %}
+
+{% block title %}主页{% endblock title %}
+
+{% block content %}
+    <div class="pusher">
+        <div class="ui basic segment">
+            <div id="container" style="width: 550px; height: 400px; margin: 0 auto">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script language="JavaScript">
+    $(document).ready(function() {
+       var title = {
+          text: '类目发帖量对比'
+       };
+        var chart = {
+               plotBackgroundColor: null,
+               plotBorderWidth: null,
+               plotShadow: false
+           };
+        var plotOptions = {
+              pie: {
+                 allowPointSelect: true,
+                 cursor: 'pointer',
+                 dataLabels: {
+                    enabled: false
+                 },
+                 showInLegend: true
+              }
+           };
+       var series= [
+           {% for i in series %}
+               {
+                type: '{{ i.type}}',
+                name: '{{ i.name }}',
+                data: {{ i.data }}
+               },
+           {% endfor %}
+       ];
+
+       var json = {};
+       json.title = title;
+       json.series = series;
+
+        json.plotOptions = plotOptions;
+       $('#container').highcharts(json);
+    });
+    </script>
+{% endblock %}
